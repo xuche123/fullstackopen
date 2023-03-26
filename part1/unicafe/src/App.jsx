@@ -13,13 +13,21 @@ const Header = ({handleClick}) => {
   )
 }
 
-const Body = ({good, bad, neutral}) => {
+const Body = ({ good, bad, neutral }) => {
+  
+  const all = good + neutral + bad
+  const average = (good * 1 + bad * -1) / all
+  const positive = good / all * 100 + '%'
+
   return (
     <div>
       <h1>statistics</h1>
       <Statistic text="good" count={good} />
       <Statistic text="neutral" count={neutral} />
       <Statistic text="bad" count={bad} />
+      <Statistic text="all" count={all} />
+      <Statistic text="average" count={average} />
+      <Statistic text="positive" count={positive} />
     </div>
   )
 }
