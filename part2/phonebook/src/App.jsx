@@ -3,6 +3,7 @@ import axios from 'axios'
 import Filter from './Components/Filter'
 import PersonForm from './Components/PersonForm'
 import Persons from './Components/Persons'
+import Notification from './Components/Notification'
 import phonebookService from './Services/phonebook'
 
 const App = () => {
@@ -10,6 +11,8 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [search, setSearch] = useState('')
+  const [message, setMessage] = useState(null)
+  const [type, setType] = useState(0)
 
   useEffect(() => {
     phonebookService.getAll()
@@ -21,8 +24,11 @@ const App = () => {
   const addNumber = (event) => {
     event.preventDefault()
     if (newName === '' || newNumber === '') {
-      alert('Please enter a name and number')
-      return
+      setType(0)
+      setMessage('Name or number is empty')
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
     }
     else {
       const personObj = {
@@ -36,6 +42,11 @@ const App = () => {
           phonebookService.updatePerson(person.id, personObj)
             .then(returnedPerson => {
               setPersons(persons.map(p => p.id !== person.id ? p : returnedPerson))
+              setType(1)
+              setMessage(`Updated ${returnedPerson.name}`)
+              setTimeout(() => {
+                setMessage(null)
+              }, 5000)
             })
         }
       }
@@ -43,6 +54,11 @@ const App = () => {
         phonebookService.create(personObj)
           .then(returnedPerson => {
             setPersons(persons.concat(returnedPerson))
+            setType(1)
+            setMessage(`Added ${returnedPerson.name}`)
+            setTimeout(() => {
+              setMessage(null)
+            }, 5000)
           })
       }
       setNewName('')
@@ -57,6 +73,12 @@ const App = () => {
       phonebookService.deletePerson(id)
         .then(() => {
           setPersons(persons.filter(p => p.id !== id))
+        }).catch(error => {
+          setType(0)
+          setMessage(`Information of ${person.name} has already been removed from server`)
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
         })
     }
   }
@@ -78,6 +100,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} type={type} />
       <Filter search={search} onChange={handleSearchChange} />
       <PersonForm addNumber={addNumber} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
 
