@@ -1,7 +1,20 @@
 const express = require('express')
+const morgan = require('morgan')
 
 const app = express()
+
 app.use(express.json())
+// use the morgan middleware to log HTTP requests and responses
+app.use(morgan(function (tokens, req, res) {
+    return [
+        tokens.method(req, res),
+        tokens.url(req, res),
+        tokens.status(req, res),
+        tokens.res(req, res, 'content-length'), '-',
+        tokens['response-time'](req, res), 'ms',
+        JSON.stringify(req.body)
+    ].join(' ')
+}))
 
 let people = [
     {

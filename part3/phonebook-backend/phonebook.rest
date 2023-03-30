@@ -8,3 +8,6 @@ content-type: application/json
   "name": "John Doe",
   "number": 30
 }
+
+###
+POST http://localhost:3001/api/people
