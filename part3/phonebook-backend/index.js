@@ -27,11 +27,49 @@ let people = [
 ]
 
 app.get('/', (req, res) => { 
-    res.send('<h1>Hello World!</h1>')
+    res.send(`<p>Phonebook has info for ${people.length} people</p><p>${new Date()}</p>`)
 })
 
 app.get('/api/people', (req, res) => {
     res.json(people)
+})
+
+app.get('/api/people/:id', (req, res) => {
+    const id = Number(req.params.id)
+    const person = people.find(person => person.id === id)
+    if (person) {
+        res.json(person)
+    } else {
+        res.status(404).end()
+    }
+})
+
+app.delete('/api/people/:id', (req, res) => {
+    const id = Number(req.params.id)
+    people = people.filter(person => person.id !== id)
+
+    res.status(204).end()
+})
+
+app.post('/api/people', (req, res) => { 
+    const body = req.body
+    if (!body.name || !body.number) {
+        return res.status(400).json({ 
+            error: 'content missing' 
+        })
+    }
+    if (people.find(person => person.name === body.name)) {
+        return res.status(400).json({ 
+            error: 'name must be unique' 
+        })
+    }
+    const person = {
+        name: body.name,
+        number: body.number,
+        id: Math.floor(Math.random() * 1000000),
+    }
+    people = people.concat(person)
+    res.json(person)
 })
 
 const PORT = 3001
