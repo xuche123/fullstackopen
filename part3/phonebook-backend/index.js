@@ -1,8 +1,10 @@
 const express = require('express')
 const morgan = require('morgan')
+const cors = require('cors')
 
 const app = express()
 
+app.use(cors())
 app.use(express.json())
 // use the morgan middleware to log HTTP requests and responses
 app.use(morgan(function (tokens, req, res) {
