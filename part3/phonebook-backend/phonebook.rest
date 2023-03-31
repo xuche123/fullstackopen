@@ -10,4 +10,4 @@ content-type: application/json
 }
 
 ###
-GET http://localhost:3001/api/people
+GET http://localhost:3001/api/people/6426a4bfeb54d5fcb5f4bdfc
