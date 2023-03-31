@@ -10,4 +10,4 @@ content-type: application/json
 }
 
 ###
-POST http://localhost:3001/api/people
+GET http://localhost:3001/api/people
