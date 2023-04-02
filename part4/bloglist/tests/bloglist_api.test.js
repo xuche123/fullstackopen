@@ -86,6 +86,43 @@ describe('fails with statuscode 400 if', () => {
 
 })
 
+describe('deletion of a note', () => {
+	test('succeeds with status code 204 if id is valid', async () => {
+		const blogsAtStart = await helper.blogsInDb()
+		const blogToDelete = blogsAtStart[0]
+
+		await api
+			.delete(`/api/blogs/${blogToDelete.id}`)
+			.expect(204)
+
+		const blogsAtEnd = await helper.blogsInDb()
+
+		expect(blogsAtEnd).toHaveLength(blogsAtStart.length - 1)
+		const title = blogsAtEnd.map(blog => blog.title)
+
+		expect(title).not.toContain(blogToDelete.title)
+	})
+})
+
+test('blogs can be updated', async () => {
+	const update = {
+		likes: 999
+	}
+
+	const blogsAtStart = await helper.blogsInDb()
+
+	const blogToUpdate = blogsAtStart[0]
+
+	await api
+		.put(`/api/blogs/${blogToUpdate.id}`)
+		.send(update)
+		.expect(200)
+
+	const response = await helper.blogsInDb()
+	const likes = response.map(r => r.likes)
+	expect(likes).toContain(999)
+})
+
 afterAll(async () => {
 	await mongoose.connection.close()
 })
