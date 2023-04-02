@@ -1,0 +1,38 @@
+GET http://localhost:3003/api/users
+
+###
+GET http://localhost:3003/api/users/64299eee3e3efc27ee60e3a3
+
+###
+POST http://localhost:3003/api/users
+content-type: application/json
+
+{
+    "username": "root",
+    "name": "root user",
+    "password": "secret"
+}
+
+###
+
+POST http://localhost:3003/api/login
+content-type: application/json
+
+{
+    "username": "root",
+    "password" : "secret"
+}
+
+###
+
+POST http://localhost:3003/api/blogs HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjY0Mjk5ZWVlM2UzZWZjMjdlZTYwZTNhMyIsImlhdCI6MTY4MDQ0OTUyNSwiZXhwIjoxNjgwNDUzMTI1fQ.1uF7u3q9NNu8Z-7PKV3tRKF56kyp3NnrKoZ0wGXojqE
+
+{
+    "title": "test",
+    "author": "test user",
+    "url": "test@test.com",
+    "likes": 9,
+    "userId": "63d2749296fddc8d722864f7"
+}
