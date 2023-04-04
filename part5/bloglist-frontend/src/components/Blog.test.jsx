@@ -42,4 +42,16 @@ describe('<Blog />', () => {
     expect(container).toHaveTextContent('Test url')
     expect(container).toHaveTextContent('likes')
   })
+
+  test('clicking like button twice calls event handler twice', async () => {
+    const user = userEvent.setup()
+    const button = component.getByText('view')
+    await user.click(button)
+
+    const likeButton = component.getByText('like')
+    await user.click(likeButton)
+    await user.click(likeButton)
+
+    expect(mockHandler.mock.calls).toHaveLength(2)
+  })
 })

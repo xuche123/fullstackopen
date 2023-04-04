@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 const Blog = ({ blog, handleLike, user, handleDelete }) => {
   const [visible, setVisible] = useState(false)
-  const [liked, setLiked] = useState(false)
+  // const [liked, setLiked] = useState(false)
 
   const blogStyle = {
     paddingTop: 10,
@@ -15,9 +15,9 @@ const Blog = ({ blog, handleLike, user, handleDelete }) => {
   }
 
   const addLike = () => {
-    if (liked) return
+    // if (liked) return
     handleLike(blog)
-    setLiked(true)
+    // setLiked(true)
   }
 
   const handleRemove = () => {
