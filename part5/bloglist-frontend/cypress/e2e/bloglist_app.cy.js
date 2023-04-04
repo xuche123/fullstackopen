@@ -40,14 +40,65 @@ describe('Bloglist App', function () {
       cy.login({ username: 'testuser', password: 'testpassword' })
     })
 
-    it.only('A blog can be created', function () {
+    it('A blog can be created', function () {
       cy.createBlog({
         title: 'Test Blog',
         author: 'Test Author',
         url: 'https://test.com',
-        likes: 0
       })
       cy.contains('Test Blog Test Author')
+    })
+
+    describe('and a blog exists', function () {
+      beforeEach(function () {
+        cy.createBlog({
+          title: 'Test Blog',
+          author: 'Test Author',
+          url: 'https://test.com',
+        })
+      })
+
+      it('it can be liked', function () {
+        cy.contains('view').click()
+        cy.contains('like').click()
+        cy.contains('likes 1')
+      })
+
+
+      it('it can be deleted by the user who created it', function () {
+        cy.contains('view').click()
+        cy.contains('remove').click()
+        cy.get('html').should('not.contain', 'Test Blog Test Author')
+      })
+
+      it('it cannot be deleted by a different user', function () {
+
+        cy.contains('logout').click()
+
+        const user = {
+          name: 'Test User 2',
+          username: 'testuser2',
+          password: 'testpassword2'
+        }
+        cy.request('POST', 'http://localhost:3003/api/users', user)
+        cy.login({ username: 'testuser2', password: 'testpassword2' })
+        cy.contains('view').click()
+        cy.get('div').should('not.contain', 'remove')
+      })
+
+      it('blogs are ordered by likes', function () {
+        cy.createBlog({
+          title: 'Test Blog 2',
+          author: 'Test Author 2',
+          url: 'https://test2.com',
+        })
+
+        cy.contains('Test Blog 2').parent().find('button').click()
+        cy.get('#like-btn').click().wait(500).click().wait(500)
+
+        cy.get('.blog').eq(0).should('contain', 'Test Blog 2')
+        cy.get('.blog').eq(1).should('contain', 'Test Blog')
+      })
     })
   })
 })
