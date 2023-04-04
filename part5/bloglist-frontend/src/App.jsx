@@ -26,6 +26,7 @@ const App = () => {
 			blogService.setToken(user.token)
 		}
 		blogService.getAll().then(blogs => {
+			blogs.sort((a, b) => b.likes - a.likes)
 			setBlogs(blogs)
 		})
 	}, [])
@@ -71,14 +72,28 @@ const App = () => {
 		setUser(null)
 	}
 
+	const handleLike = async (blog) => {
+		const newBlog = {
+			author: blog.author,
+			title: blog.title,
+			url: blog.url,
+			likes: blog.likes + 1
+		}
+		const response = await blogService.update(blog.id, newBlog)
+		response.user = blog.user
+		setBlogs(blogs.map(b => b.id === blog.id ? response : b))
+	}
+
 	const createBlog = async (newBlog) => {
 		try {
 			const response = await blogService.create(newBlog)
+			const id = response.user
 			response.user = {
 				username: user.username,
 				name: user.name,
-				id: user.id
+				id: id
 			}
+			console.log(response)
 			setBlogs(blogs.concat(response))
 			setType(1)
 			setMessage(`a new blog ${response.title} by ${response.author} added`)
@@ -94,6 +109,27 @@ const App = () => {
 			}, 5000)
 		}
 	}
+
+	const handleDelete = async (blog) => {
+		if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+			try {
+				await blogService.deleteBlog(blog.id)
+				setBlogs(blogs.filter(b => b.id !== blog.id))
+				setType(1)
+				setMessage(`blog ${blog.title} by ${blog.author} removed`)
+				setTimeout(() => {
+					setMessage(null)
+				}, 5000)
+			} catch (exception) {
+				setMessage('something went wrong')
+				setType(0)
+				setTimeout(() => {
+					setMessage(null)
+				}, 5000)
+			}
+		}
+	}
+
 
 	return (
 		<div>
@@ -116,7 +152,7 @@ const App = () => {
 			
 			<div>
 				{blogs.map(blog =>
-					<Blog key={blog.id} blog={blog} />
+					<Blog key={blog.id} blog={blog} handleLike={handleLike} user={user} handleDelete={handleDelete} />
 				)}
 			</div>
 		</div>
