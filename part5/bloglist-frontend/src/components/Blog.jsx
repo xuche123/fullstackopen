@@ -27,7 +27,7 @@ const Blog = ({ blog, handleLike, user, handleDelete }) => {
   return (
     <div style={blogStyle}>
       <div>
-        <span id="title">{blog.title}</span><span id="author">{blog.author}</span>  &nbsp;
+        <span id="title">{blog.title}</span> <span id="author">{blog.author}</span>  &nbsp;
         <button onClick={() => setVisible(!visible)}>{visible ? 'hide' : 'view'}</button>
         {visible && <div>
           <div id="url">{blog.url}</div>

@@ -1,14 +1,13 @@
-
 describe('Bloglist App', function () {
   beforeEach(function () {
-    cy.request('POST', `${Cypress.env('BACKEND')}/testing/reset`)
+    cy.request('POST', 'http://localhost:3003/api/testing/reset')
     const user = {
       name: 'Test User',
       username: 'testuser',
       password: 'testpassword'
     }
-    cy.request('POST', `${Cypress.env('BACKEND')}/users`, user)
-    cy.visit('')
+    cy.request('POST', 'http://localhost:3003/api/users', user)
+    cy.visit('http://localhost:5173')
   })
   it('front page can be opened', function () {
     cy.contains('blogs')
@@ -27,7 +26,7 @@ describe('Bloglist App', function () {
 
     it('fails with wrong credentials', function () {
       cy.get('#username').type('testuser')
-      cy.get('#password').type('w235125325')
+      cy.get('#password').type('wrongpassword')
       cy.get('#login-button').click()
       cy.should('not.contain', 'Test User logged in')
       cy.get('.notification').should('contain', 'wrong credentials')
@@ -36,5 +35,20 @@ describe('Bloglist App', function () {
     })
   })
 
+  describe('When logged in', function () {
+    beforeEach(function () {
+      cy.login({ username: 'testuser', password: 'testpassword' })
+    })
+
+    it.only('A blog can be created', function () {
+      cy.createBlog({
+        title: 'Test Blog',
+        author: 'Test Author',
+        url: 'https://test.com',
+        likes: 0
+      })
+      cy.contains('Test Blog Test Author')
+    })
+  })
 })
 
