@@ -1,6 +1,8 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
-import { render } from '@testing-library/react'
+// eslint-disable-next-line no-unused-vars
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 import { vi } from 'vitest'
 
@@ -30,5 +32,14 @@ describe('<Blog />', () => {
     expect(container).toHaveTextContent('Test author')
     expect(container).not.toHaveTextContent('Test url')
     expect(container).not.toHaveTextContent('likes')
+  })
+
+  test('renders url and likes when view button is clicked', async () => {
+    const user = userEvent.setup()
+    const button = component.getByText('view')
+    await user.click(button)
+
+    expect(container).toHaveTextContent('Test url')
+    expect(container).toHaveTextContent('likes')
   })
 })
