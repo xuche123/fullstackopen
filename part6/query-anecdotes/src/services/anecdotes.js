@@ -12,8 +12,8 @@ const createAnecdote = async (anecdote) => {
     return response.data
 }
 
-const vote = async (id, newObject) => {
-    const request = await axios.put(`${baseUrl}/${id}`, newObject)
+const vote = async (newObject) => {
+    const request = await axios.put(`${baseUrl}/${newObject.id}`, newObject)
     return request.data
 } 
 
