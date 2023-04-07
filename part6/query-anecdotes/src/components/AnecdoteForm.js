@@ -1,14 +1,38 @@
 import anecdoteService from '../services/anecdotes'
 import { useMutation, useQueryClient } from 'react-query'
+import { useContext } from 'react'
+import NotificationContext from './NotificationContext'
 
 const AnecdoteForm = () => {
   const queryClient = useQueryClient()
+
+  const [notification, dispatch] = useContext(NotificationContext)
 
   const newAnecdoteMutation = useMutation(anecdoteService.createAnecdote, {
     onSuccess: (newAnecdote) => {
       // queryClient.invalidateQueries('anecdotes')
       const anecdotes = queryClient.getQueryData('anecdotes')
       queryClient.setQueryData('anecdotes', anecdotes.concat(newAnecdote))
+      dispatch({
+        type: "SET",
+        payload: `anecdote '${newAnecdote.content}' added`
+      })
+      setTimeout(() => {
+        dispatch({
+          type: "RESET"
+        })
+      }, 5000);
+    },
+    onError: () => {
+      dispatch({
+        type: "SET",
+        payload: "anecdote must be 5 or more characters long."
+      })
+      setTimeout(() => {
+        dispatch({
+          type: "RESET"
+        })
+      }, 5000);
     }
   })
 
