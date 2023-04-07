@@ -9,7 +9,8 @@ const Notification = () => {
     marginBottom: 5
   }
 
-  const[notification, dispatch] = useContext(NotificationContext)
+  // eslint-disable-next-line no-unused-vars
+  const [notification, dispatch] = useContext(NotificationContext)
   
   if (!notification) return null
 

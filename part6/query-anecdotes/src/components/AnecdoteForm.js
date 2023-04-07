@@ -6,6 +6,7 @@ import NotificationContext from './NotificationContext'
 const AnecdoteForm = () => {
   const queryClient = useQueryClient()
 
+  // eslint-disable-next-line no-unused-vars
   const [notification, dispatch] = useContext(NotificationContext)
 
   const newAnecdoteMutation = useMutation(anecdoteService.createAnecdote, {
