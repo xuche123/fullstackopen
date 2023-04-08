@@ -4,11 +4,17 @@ import { useField } from '../hooks'
 const CreateNew = (props) => {
     const navigate = useNavigate()
 
-    const contentField = useField('text')
-    const authorField = useField('text')
-    const infoField = useField('text')
+    //excliue reset from all obj
+    const { reset: resetContent, ...contentField } = useField('text')
+    const { reset: resetAuthor, ...authorField } = useField('text')
+    const { reset: resetInfo, ...infoField } = useField('text')
 
-
+    const reset = (e) => {
+        e.preventDefault()
+        resetContent()
+        resetAuthor()
+        resetInfo()
+    }
     const handleSubmit = (e) => {
         e.preventDefault()
         console.log(e)
@@ -38,6 +44,7 @@ const CreateNew = (props) => {
                     <input {...infoField} />
                 </div>
                 <button>create</button>
+                <button onClick={reset}>reset</button>
             </form>
         </div>
     )
