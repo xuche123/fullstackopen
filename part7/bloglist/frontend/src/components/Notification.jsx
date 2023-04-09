@@ -1,8 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { useSelector } from 'react-redux'
 
-const Notification = ({ message, type }) => {
-  if (message === null) {
+const Notification = () => {
+  const notification = useSelector(({ notification }) => notification)
+  // const type = useSelector(({ type }) => type)
+  const type = 1
+  if (notification === null) {
     return null
   }
 
@@ -27,14 +31,9 @@ const Notification = ({ message, type }) => {
             }
       }
     >
-      {message}
+      {notification}
     </div>
   )
-}
-
-Notification.propTypes = {
-  message: PropTypes.string,
-  type: PropTypes.number,
 }
 
 export default Notification
