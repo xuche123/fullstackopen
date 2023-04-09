@@ -4,9 +4,10 @@ import { useSelector } from 'react-redux'
 
 const Notification = () => {
   const notification = useSelector(({ notification }) => notification)
-  // const type = useSelector(({ type }) => type)
-  const type = 1
-  if (notification === null) {
+  
+  const message = notification.message
+  const type = notification.type
+  if (message === null) {
     return null
   }
 
@@ -31,7 +32,7 @@ const Notification = () => {
             }
       }
     >
-      {notification}
+      {message}
     </div>
   )
 }

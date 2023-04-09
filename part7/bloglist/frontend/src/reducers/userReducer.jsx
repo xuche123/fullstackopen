@@ -24,7 +24,6 @@ export const login = (username, password) => {
             password,
         })
         dispatch(setUser(user))
-        console.log(user)
         window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
 
         return user.name

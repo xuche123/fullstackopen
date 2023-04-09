@@ -20,7 +20,6 @@ const update = async (id, newObject) => {
 }
 
 const deleteBlog = async (id, token) => {
-  console.log(token)
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   }
