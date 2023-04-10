@@ -21,8 +21,8 @@ const BlogForm = ({ createBlog }) => {
 
   return (
     <form onSubmit={addBlog}>
-      <div>
-        title:
+      <div className='flex flex-col'>
+        <label htmlFor="title">title</label>
         <input
           type="text"
           value={newBlog.title}
@@ -36,7 +36,7 @@ const BlogForm = ({ createBlog }) => {
           id="title"
         />
       </div>
-      <div>
+      <div className='flex flex-col'>
         author:
         <input
           type="text"
@@ -52,7 +52,7 @@ const BlogForm = ({ createBlog }) => {
         />
       </div>
 
-      <div>
+      <div className='flex flex-col'>
         url:
         <input
           type="text"
@@ -68,7 +68,7 @@ const BlogForm = ({ createBlog }) => {
         />
       </div>
 
-      <button type="submit" id="create-blog-button">
+      <button type="submit" id="create-blog-button" className='btn btn-sm btn-outline my-1'>
         create
       </button>
     </form>

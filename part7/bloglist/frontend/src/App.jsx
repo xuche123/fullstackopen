@@ -131,27 +131,26 @@ const App = () => {
     }, [])
 
     return (
-      <div>
-        <h2>Users</h2>
-        <table>
-          <thead>
-            <tr>
-              <th></th>
-              <th>blogs created</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user) => (
-              <tr key={user.id}>
-                <td>
-                  <Link to={`/users/${user.id}`}>{user.name}</Link>
-                </td>
-                <td>{user.blogs.length}</td>
+      <div className='flex justify-center'>
+          <table className='table table-compact w-full'>
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>blogs created</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {users.map((user) => (
+                <tr key={user.id}>
+                  <td>
+                    <Link to={`/users/${user.id}`}>{user.name}</Link>
+                  </td>
+                  <td>{user.blogs.length}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
     )
   }
 
@@ -184,35 +183,43 @@ const App = () => {
     )
   }
 
+  const NavBar = () => {
+    return (
+      <div className="navbar bg-base-100">
+        <div className="flex-1">
+          <div>BlogApp</div>
+        </div>
+        <div className="flex-none">
+          <ul className="menu menu-horizontal px-1">
+            <li><Link to="/">blogs</Link></li>
+            <li><Link to="/users">users</Link></li>
+          </ul>
+          {user && (
+            <div>
+              {user.name} logged in
+              <button onClick={handleLogout} className='mx-1 btn btn-sm btn-outline my-1'>logout</button>
+            </div>
+          )}
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div>
-      <div>
-        <Link to="/" style={{ paddingRight: 5 }}>blogs</Link>
-        <Link to="/users" style={{ paddingRight: 5 }}>users</Link>
-        {user && (
-          <div>
-            <p>
-              {user.name} logged in<button onClick={handleLogout}>logout</button>
-            </p>
-          </div>
+      <NavBar />
+
+      <div className="container mx-auto">
+        <Notification />
+        {!user && (
+          <LoginForm
+            handleLogin={handleLogin}
+            username={username}
+            handleUsernameChange={handleUsernameChange}
+            password={password}
+            handlePasswordChange={handlePasswordChange}
+          />
         )}
-      </div>
-
-      <h2>blog app</h2>
-
-      <Notification />
-      {!user && (
-        <LoginForm
-          handleLogin={handleLogin}
-          username={username}
-          handleUsernameChange={handleUsernameChange}
-          password={password}
-          handlePasswordChange={handlePasswordChange}
-        />
-      )}
-      
-      
-      <div>
         <Routes>
           <Route path="/" element={<Blogs blogs={blogs} />} />
           <Route path="/users" element={<Users />} />

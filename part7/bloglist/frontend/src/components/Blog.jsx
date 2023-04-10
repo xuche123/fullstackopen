@@ -42,9 +42,9 @@ const Blog = ({ handleLike, user, handleDelete, handleComment }) => {
 
     return (
       <form onSubmit={addComment}>
-        <div>
-          Add comment..
-          <input
+        <div className='flex flex-col'>
+          <label htmlFor="title">comment</label>
+          <textarea
             type="text"
             value={comment}
             onChange={({ target }) => setComment(target.value)}
@@ -52,7 +52,7 @@ const Blog = ({ handleLike, user, handleDelete, handleComment }) => {
           />
         </div>
         
-        <button type="submit" id="create-blog-button">
+        <button type="submit" id="create-blog-button" className='btn btn-sm btn-outline btn-pri'>
           add comment
         </button>
       </form>
@@ -60,7 +60,7 @@ const Blog = ({ handleLike, user, handleDelete, handleComment }) => {
   }
 
   return (
-    <div className="blog">
+    <div className="blog prose">
       <div>
         <h2>
           <span id="title">{blog.title}</span>{' '}
@@ -77,11 +77,12 @@ const Blog = ({ handleLike, user, handleDelete, handleComment }) => {
           </div>
           <div id="user">added by {blog.user_name}</div>
           {user && blog.user_username === user.username && (
-            <button onClick={handleRemove}>remove</button>
+            <button onClick={handleRemove} className="btn btn-error btn-outline btn-sm">remove</button>
           )}
 
-          <h3>comments</h3>
+          
           <CommentForm />
+          <h3>comments</h3>
           <ul>
             {blog.comments.map((comment) => (
               <li key={comment}>{comment}</li>

@@ -10,30 +10,40 @@ const LoginForm = ({
 }) => {
   return (
     <form onSubmit={handleLogin}>
-      <h2>Log in to application</h2>
-      <div>
-        username
-        <input
-          type="text"
-          value={username}
-          name="Username"
-          onChange={handleUsernameChange}
-          id="username"
-        />
-      </div>
-      <div>
-        password
-        <input
-          type="password"
-          value={password}
-          name="Password"
-          onChange={handlePasswordChange}
-          id="password"
-        />
-      </div>
-      <button type="submit" id="login-button">
-        login
-      </button>
+      <article className="prose">
+        <h2>Log in to application</h2>
+
+        <div className='flex flex-col'>
+          <label htmlFor="username">username </label>
+          <input
+            type="text"
+            value={username}
+            name="Username"
+            onChange={handleUsernameChange}
+            id="username"
+            className='h-8 my-1'
+          />
+
+        </div>
+
+        <div className='flex flex-col'>
+          <label htmlFor="password">password </label>
+          <input
+            type="password"
+            value={password}
+            name="Password"
+            onChange={handlePasswordChange}
+            id="password"
+            className='h-8 my-1'
+          />
+        </div>
+
+
+        <button type="submit" id="login-button" className='btn btn-sm btn-wide btn-outline my-1'>
+          login
+        </button>
+      </article>
+
     </form>
   )
 }
