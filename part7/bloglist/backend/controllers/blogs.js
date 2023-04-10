@@ -78,11 +78,11 @@ blogsRouter.post('/:id/comments', async (request, response) => {
 
   blog.comments = blog.comments.concat(body.comment)
 
-  const updatedBlog = await Blog.findByIdAndUpdate(
-    request.params.id,
-    blog,
-    { new: true, runValidators: true, context: 'query' }
-  )
+  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, {
+    new: true,
+    runValidators: true,
+    context: 'query',
+  })
 
   response.json(updatedBlog)
 })

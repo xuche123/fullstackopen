@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 
 const Notification = () => {
   const notification = useSelector(({ notification }) => notification)
-  
+
   const message = notification.message
   const type = notification.type
   if (message === null) {

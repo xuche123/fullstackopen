@@ -13,7 +13,7 @@ const LoginForm = ({
       <article className="prose">
         <h2>Log in to application</h2>
 
-        <div className='flex flex-col'>
+        <div className="flex flex-col">
           <label htmlFor="username">username </label>
           <input
             type="text"
@@ -21,12 +21,11 @@ const LoginForm = ({
             name="Username"
             onChange={handleUsernameChange}
             id="username"
-            className='h-8 my-1'
+            className="h-8 my-1"
           />
-
         </div>
 
-        <div className='flex flex-col'>
+        <div className="flex flex-col">
           <label htmlFor="password">password </label>
           <input
             type="password"
@@ -34,16 +33,18 @@ const LoginForm = ({
             name="Password"
             onChange={handlePasswordChange}
             id="password"
-            className='h-8 my-1'
+            className="h-8 my-1"
           />
         </div>
 
-
-        <button type="submit" id="login-button" className='btn btn-sm btn-wide btn-outline my-1'>
+        <button
+          type="submit"
+          id="login-button"
+          className="btn btn-sm btn-wide btn-outline my-1"
+        >
           login
         </button>
       </article>
-
     </form>
   )
 }

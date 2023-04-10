@@ -27,14 +27,13 @@ const Blog = ({ handleLike, user, handleDelete, handleComment }) => {
     fetchBlog()
   }, [handleLike])
 
-
   if (!blog) {
     return null
   }
 
   const CommentForm = () => {
     const [comment, setComment] = useState('')
-    
+
     const addComment = (event) => {
       event.preventDefault()
       handleComment(blog, comment)
@@ -42,7 +41,7 @@ const Blog = ({ handleLike, user, handleDelete, handleComment }) => {
 
     return (
       <form onSubmit={addComment}>
-        <div className='flex flex-col'>
+        <div className="flex flex-col">
           <label htmlFor="title">comment</label>
           <textarea
             type="text"
@@ -51,8 +50,12 @@ const Blog = ({ handleLike, user, handleDelete, handleComment }) => {
             id="title"
           />
         </div>
-        
-        <button type="submit" id="create-blog-button" className='btn btn-sm btn-outline btn-pri'>
+
+        <button
+          type="submit"
+          id="create-blog-button"
+          className="btn btn-sm btn-outline btn-pri"
+        >
           add comment
         </button>
       </form>
@@ -77,10 +80,14 @@ const Blog = ({ handleLike, user, handleDelete, handleComment }) => {
           </div>
           <div id="user">added by {blog.user_name}</div>
           {user && blog.user_username === user.username && (
-            <button onClick={handleRemove} className="btn btn-error btn-outline btn-sm">remove</button>
+            <button
+              onClick={handleRemove}
+              className="btn btn-error btn-outline btn-sm"
+            >
+              remove
+            </button>
           )}
 
-          
           <CommentForm />
           <h3>comments</h3>
           <ul>

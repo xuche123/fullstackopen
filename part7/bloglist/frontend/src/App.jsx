@@ -7,7 +7,13 @@ import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
 import { setNotifications } from './reducers/notificationReducer'
 import { useDispatch, useSelector } from 'react-redux'
-import { initializeBlogs, postBlog, likeBlog, removeBlog, commentBlog } from './reducers/blogReducer'
+import {
+  initializeBlogs,
+  postBlog,
+  likeBlog,
+  removeBlog,
+  commentBlog,
+} from './reducers/blogReducer'
 import { login, logout, initializeUser } from './reducers/userReducer'
 import userService from './services/users'
 import { Routes, Route, Link, useParams } from 'react-router-dom'
@@ -57,8 +63,9 @@ const App = () => {
   const handleLike = async (blog) => {
     try {
       await dispatch(likeBlog(blog))
-      dispatch(setNotifications(`blog ${blog.title} by ${blog.author} liked`, 5, 1))
-
+      dispatch(
+        setNotifications(`blog ${blog.title} by ${blog.author} liked`, 5, 1)
+      )
     } catch (exception) {
       dispatch(setNotifications('something went wrong', 5, 0))
     }
@@ -67,7 +74,13 @@ const App = () => {
   const createBlog = async (newBlog) => {
     try {
       await dispatch(postBlog(newBlog, user))
-      dispatch(setNotifications(`a new blog ${newBlog.title} by ${newBlog.author} added`, 5, 1))
+      dispatch(
+        setNotifications(
+          `a new blog ${newBlog.title} by ${newBlog.author} added`,
+          5,
+          1
+        )
+      )
       blogFormRef.current.toggleVisibility()
     } catch (exception) {
       dispatch(setNotifications('something went wrong', 5, 0))
@@ -78,7 +91,9 @@ const App = () => {
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
       try {
         await dispatch(removeBlog(blog, user.token))
-        dispatch(setNotifications(`blog ${blog.title} by ${blog.author} removed`, 5, 1))
+        dispatch(
+          setNotifications(`blog ${blog.title} by ${blog.author} removed`, 5, 1)
+        )
       } catch (exception) {
         dispatch(setNotifications('something went wrong', 5, 0))
       }
@@ -88,7 +103,13 @@ const App = () => {
   const handleComment = async (blog, comment) => {
     try {
       await dispatch(commentBlog(blog, comment))
-      dispatch(setNotifications(`comment ${comment} added to blog ${blog.title} by ${blog.author}`, 5, 1))
+      dispatch(
+        setNotifications(
+          `comment ${comment} added to blog ${blog.title} by ${blog.author}`,
+          5,
+          1
+        )
+      )
     } catch (exception) {
       dispatch(setNotifications('something went wrong', 5, 0))
     }
@@ -106,16 +127,21 @@ const App = () => {
             </div>
           )}
         </div>
-        {blogs
-          .map((blog) => (
-            <div style={
-              { border: 'solid', padding: 10, borderWidth: 1, marginBottom: 5 }
-            } key={blog.id}>
-              <Link to={`/blogs/${blog.id}`} key={blog.id}>
-                {blog.title} {blog.author}
-              </Link>
-            </div>
-          ))}
+        {blogs.map((blog) => (
+          <div
+            style={{
+              border: 'solid',
+              padding: 10,
+              borderWidth: 1,
+              marginBottom: 5,
+            }}
+            key={blog.id}
+          >
+            <Link to={`/blogs/${blog.id}`} key={blog.id}>
+              {blog.title} {blog.author}
+            </Link>
+          </div>
+        ))}
       </div>
     )
   }
@@ -131,26 +157,26 @@ const App = () => {
     }, [])
 
     return (
-      <div className='flex justify-center'>
-          <table className='table table-compact w-full'>
-            <thead>
-              <tr>
-                <th>User</th>
-                <th>blogs created</th>
+      <div className="flex justify-center">
+        <table className="table table-compact w-full">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>blogs created</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((user) => (
+              <tr key={user.id}>
+                <td>
+                  <Link to={`/users/${user.id}`}>{user.name}</Link>
+                </td>
+                <td>{user.blogs.length}</td>
               </tr>
-            </thead>
-            <tbody>
-              {users.map((user) => (
-                <tr key={user.id}>
-                  <td>
-                    <Link to={`/users/${user.id}`}>{user.name}</Link>
-                  </td>
-                  <td>{user.blogs.length}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
+      </div>
     )
   }
 
@@ -191,13 +217,22 @@ const App = () => {
         </div>
         <div className="flex-none">
           <ul className="menu menu-horizontal px-1">
-            <li><Link to="/">blogs</Link></li>
-            <li><Link to="/users">users</Link></li>
+            <li>
+              <Link to="/">blogs</Link>
+            </li>
+            <li>
+              <Link to="/users">users</Link>
+            </li>
           </ul>
           {user && (
             <div>
               {user.name} logged in
-              <button onClick={handleLogout} className='mx-1 btn btn-sm btn-outline my-1'>logout</button>
+              <button
+                onClick={handleLogout}
+                className="mx-1 btn btn-sm btn-outline my-1"
+              >
+                logout
+              </button>
             </div>
           )}
         </div>
@@ -224,7 +259,17 @@ const App = () => {
           <Route path="/" element={<Blogs blogs={blogs} />} />
           <Route path="/users" element={<Users />} />
           <Route path="/users/:id" element={<User />} />
-          <Route path="/blogs/:id" element={<Blog handleLike={handleLike} handleDelete={handleDelete} user={user} handleComment={handleComment} />} />
+          <Route
+            path="/blogs/:id"
+            element={
+              <Blog
+                handleLike={handleLike}
+                handleDelete={handleDelete}
+                user={user}
+                handleComment={handleComment}
+              />
+            }
+          />
         </Routes>
       </div>
     </div>
