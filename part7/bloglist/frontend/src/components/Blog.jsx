@@ -1,24 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, Link, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import blogService from '../services/blogs'
-import userService from '../services/users'
 
-const Blog = ({ handleLike, user, handleDelete }) => {
+const Blog = ({ handleLike, user, handleDelete, handleComment }) => {
   const id = useParams().id
   const [blog, setBlog] = useState(null)
-  const [poster, setPoster] = useState(null)
 
   const navigate = useNavigate()
-
-  useEffect(() => {
-    const fetchBlog = async () => {
-      const blog = await blogService.getBlog(id)
-      const poster = await userService.getUser(blog.user)
-      setPoster(poster)
-      setBlog(blog)
-    }
-    fetchBlog()
-  }, [id])
 
   const addLike = () => {
     // if (liked) return
@@ -31,8 +19,44 @@ const Blog = ({ handleLike, user, handleDelete }) => {
     navigate('/')
   }
 
+  useEffect(() => {
+    const fetchBlog = async () => {
+      const blog = await blogService.getBlog(id)
+      setBlog(blog)
+    }
+    fetchBlog()
+  }, [handleLike])
+
+
   if (!blog) {
     return null
+  }
+
+  const CommentForm = () => {
+    const [comment, setComment] = useState('')
+    
+    const addComment = (event) => {
+      event.preventDefault()
+      handleComment(blog, comment)
+    }
+
+    return (
+      <form onSubmit={addComment}>
+        <div>
+          Add comment..
+          <input
+            type="text"
+            value={comment}
+            onChange={({ target }) => setComment(target.value)}
+            id="title"
+          />
+        </div>
+        
+        <button type="submit" id="create-blog-button">
+          add comment
+        </button>
+      </form>
+    )
   }
 
   return (
@@ -51,10 +75,18 @@ const Blog = ({ handleLike, user, handleDelete }) => {
               like
             </button>
           </div>
-          <div id="user">added by {poster.name}</div>
-          {user && poster.username === user.username && (
+          <div id="user">added by {blog.user_name}</div>
+          {user && blog.user_username === user.username && (
             <button onClick={handleRemove}>remove</button>
           )}
+
+          <h3>comments</h3>
+          <CommentForm />
+          <ul>
+            {blog.comments.map((comment) => (
+              <li key={comment}>{comment}</li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>

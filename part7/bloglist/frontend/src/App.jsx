@@ -7,7 +7,7 @@ import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
 import { setNotifications } from './reducers/notificationReducer'
 import { useDispatch, useSelector } from 'react-redux'
-import { initializeBlogs, postBlog, likeBlog, removeBlog } from './reducers/blogReducer'
+import { initializeBlogs, postBlog, likeBlog, removeBlog, commentBlog } from './reducers/blogReducer'
 import { login, logout, initializeUser } from './reducers/userReducer'
 import userService from './services/users'
 import { Routes, Route, Link, useParams } from 'react-router-dom'
@@ -85,10 +85,27 @@ const App = () => {
     }
   }
 
-  const Blogs = ({ blogs }) => {
+  const handleComment = async (blog, comment) => {
+    try {
+      await dispatch(commentBlog(blog, comment))
+      dispatch(setNotifications(`comment ${comment} added to blog ${blog.title} by ${blog.author}`, 5, 1))
+    } catch (exception) {
+      dispatch(setNotifications('something went wrong', 5, 0))
+    }
+  }
 
+  const Blogs = ({ blogs }) => {
     return (
       <div>
+        <div>
+          {user && (
+            <div>
+              <Togglable buttonLabel="Add new entry..." ref={blogFormRef}>
+                <BlogForm createBlog={createBlog} />
+              </Togglable>
+            </div>
+          )}
+        </div>
         {blogs
           .map((blog) => (
             <div style={
@@ -169,7 +186,19 @@ const App = () => {
 
   return (
     <div>
-      <h2>blogs</h2>
+      <div>
+        <Link to="/" style={{ paddingRight: 5 }}>blogs</Link>
+        <Link to="/users" style={{ paddingRight: 5 }}>users</Link>
+        {user && (
+          <div>
+            <p>
+              {user.name} logged in<button onClick={handleLogout}>logout</button>
+            </p>
+          </div>
+        )}
+      </div>
+
+      <h2>blog app</h2>
 
       <Notification />
       {!user && (
@@ -181,25 +210,14 @@ const App = () => {
           handlePasswordChange={handlePasswordChange}
         />
       )}
-      <div>
-        {user && (
-          <div>
-            <p>
-              {user.name} logged in<button onClick={handleLogout}>logout</button>
-            </p>
-            <Togglable buttonLabel="Add new entry..." ref={blogFormRef}>
-              <BlogForm createBlog={createBlog} />
-            </Togglable>
-          </div>
-        )}
-      </div>
-
+      
+      
       <div>
         <Routes>
           <Route path="/" element={<Blogs blogs={blogs} />} />
           <Route path="/users" element={<Users />} />
           <Route path="/users/:id" element={<User />} />
-          <Route path="/blogs/:id" element={<Blog handleLike={handleLike} handleDelete={handleDelete} user={user} />} />
+          <Route path="/blogs/:id" element={<Blog handleLike={handleLike} handleDelete={handleDelete} user={user} handleComment={handleComment} />} />
         </Routes>
       </div>
     </div>

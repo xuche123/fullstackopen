@@ -13,8 +13,7 @@ const blogSlice = createSlice({
         },
         updateBlog(state, action) {
             const id = action.payload.id
-            const blogToChange = state.find((b) => b.id === id)
-            blogToChange.likes = action.payload.likes
+            return state.map((b) => (b.id === id ? action.payload : b))
         },
         deleteBlog(state, action) {
             const id = action.payload.id
@@ -36,15 +35,7 @@ export const initializeBlogs = () => {
 export const postBlog = (blog, user) => {
     return async (dispatch) => {
         const newBlog = await blogService.create(blog, user.token)
-        const newBlogWithUser = {
-            ...newBlog,
-            user: {
-                username: user.username,
-                name: user.name,
-                id: newBlog.user,
-            }
-        }
-        dispatch(addBlog(newBlogWithUser))
+        dispatch(addBlog(newBlog))
     }
 }
 
@@ -56,6 +47,16 @@ export const likeBlog = (blog) => {
         dispatch(updateBlog(updatedBlog))
     }
 }
+
+export const commentBlog = (blog, comment) => {
+    return async (dispatch) => {
+        const commentObject = { comment: comment }
+        const updatedBlog = await blogService.comment(blog.id, commentObject)
+        console.log('update', updatedBlog)
+        dispatch(updateBlog(updatedBlog))
+    }
+}
+
 
 export const removeBlog = (blog, token) => {
     return async (dispatch) => {
