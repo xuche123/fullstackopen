@@ -1,4 +1,6 @@
-type Gender = 'male' | 'female' | 'other';
+// type Gender = 'male' | 'female' | 'other';
+
+import toNewPatientEntry from "../utils";
 
 export interface PatientEntry {
     id: string;
@@ -9,7 +11,17 @@ export interface PatientEntry {
     occupation: string;
 }
 
-const data: PatientEntry[] = [
+export enum Gender {
+    Male = 'male',
+    Female = 'female',
+    Other = 'other'
+}
+
+export type NewPatientEntry = Omit<PatientEntry, 'id'>;
+
+export type NonSensitivePatientEntry = Omit<PatientEntry, 'ssn'>;
+
+const data = [
     {
         "id": "d2773336-f723-11e9-8f0b-362b9e155667",
         "name": "John McClane",
@@ -52,4 +64,10 @@ const data: PatientEntry[] = [
     }
 ];
 
-export default data;
+const patients: PatientEntry[] = data.map(obj => {
+    const object = toNewPatientEntry(obj) as PatientEntry;
+    object.id = obj.id;
+    return object;
+});
+
+export default patients;
