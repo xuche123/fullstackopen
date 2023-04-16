@@ -10,9 +10,9 @@ const toNewPatientEntry = (object: unknown): NewPatientEntry => {
             name: parseValue(object.name, "name"),
             dateOfBirth: parseDate(object.dateOfBirth),
             ssn: parseValue(object.ssn, "ssn"),
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             gender: parseGender(object.gender),
             occupation: parseValue(object.occupation, "occupation"),
+            entries: []
         };
         return newEntry;
     }    
