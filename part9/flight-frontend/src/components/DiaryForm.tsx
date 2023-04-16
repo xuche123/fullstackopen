@@ -6,66 +6,54 @@ interface DiaryFormProps {
 }
 
 const DiaryForm = ({ handleSubmit }: DiaryFormProps) => {
-    
-    const [diary, setDiary] = useState<NewDiaryEntry>({
-        date: "",
-        visibility: Visibility.Great,
-        weather: Weather.Sunny,
-        comment: ""
-    })
 
-    const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setDiary({ ...diary, date: event.target.value })
-    }
-
-    const handleVisibilityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setDiary({ ...diary, visibility: event.target.value as Visibility })
-    }
-
-    const handleWeatherChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setDiary({ ...diary, weather: event.target.value as Weather})
-    }
-
-    const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setDiary({ ...diary, comment: event.target.value })
-    }
+    const [visibility, setVisibility] = useState<Visibility | null>(null)
+    const [weather, setWeather] = useState<Weather | null>(null)
+    const [comment, setComment] = useState<string>("")
+    const [date, setDate] = useState<string>("")
 
     const addDiary = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
+        if (visibility === null || weather === null || date === "" || comment === "") {
+            alert("Please select all the options")
+            return
+        }
 
         handleSubmit({
-            date: diary.date,
-            visibility: diary.visibility as Visibility,
-            weather: diary.weather as Weather,
-            comment: diary.comment
+            date: date,
+            visibility: visibility,
+            weather: weather,
+            comment: comment
         })
-        setDiary({
-            date: "",
-            visibility: Visibility.Great,
-            weather: Weather.Sunny,
-            comment:""
-        })
+
+        setVisibility(null)
+        setWeather(null)
+        setComment("")
+        setDate("")
     }
 
     return (
         <form onSubmit={addDiary}>
-            <input type="date" value={diary.date} onChange={handleDateChange} />
+            <input type="date" value={date} onChange={({target})=> setDate(target.value)} />
             <div>
-                <input name="visibility" type="radio" value={Visibility.Great} onChange={handleVisibilityChange} /> great
-                <input name="visibility" type="radio" value={Visibility.Good} onChange={handleVisibilityChange} /> good
-                <input name="visibility" type="radio" value={Visibility.Ok} onChange={handleVisibilityChange} /> ok
-                <input name="visibility" type="radio" value={Visibility.Poor} onChange={handleVisibilityChange} /> poor
+                {Object.values(Visibility).map((v) => (
+                    <span key={v}>
+                        <input checked={visibility === v} name="visibility" type="radio" value={v} onChange={()=> setVisibility(v)} />
+                        {v}
+                    </span>
+                ))}
             </div>
             
             <div>
-                <input name="weather" type="radio" value={Weather.Sunny} onChange={handleWeatherChange} /> sunny
-                <input name="weather" type="radio" value={Weather.Rainy} onChange={handleWeatherChange} /> rainy
-                <input name="weather" type="radio" value={Weather.Cloudy} onChange={handleWeatherChange} /> cloudy
-                <input name="weather" type="radio" value={Weather.Stormy} onChange={handleWeatherChange} /> stormy
-                <input name="weather" type="radio" value={Weather.Windy} onChange={handleWeatherChange} /> windy
+                {Object.values(Weather).map((w) => (
+                    <span key={w}>
+                        <input checked={weather === w} name="weather" type="radio" value={w} onChange={()=>setWeather(w)} />
+                        {w}
+                    </span>
+                ))}
             </div>
             <div>
-                comment: <input value={diary.comment} onChange={handleCommentChange} />
+                comment: <input value={comment} onChange={({target})=>setComment(target.value)} />
             </div>
 
             <button type="submit">add</button>
