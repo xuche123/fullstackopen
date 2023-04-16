@@ -1,10 +1,6 @@
-interface DiagnosisEntry {
-    code: string;
-    name: string;
-    latin?: string;
-}
+import { Diagnosis } from "../types";
 
-const data: DiagnosisEntry[] = [
+const data: Diagnosis[] = [
   {
     "code": "M24.2",
     "name": "Disorder of ligament",

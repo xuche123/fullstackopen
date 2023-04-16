@@ -1,30 +1,31 @@
-import { NewPatientEntry, Gender } from "./data/patients";
+import { NewPatient, Gender } from './types';
 
-const toNewPatientEntry = (object: unknown): NewPatientEntry => {
-    if ( !object || typeof object !== 'object' ) {
-        throw new Error('Incorrect or missing data');
-    }
-
-    if ('name' in object && 'dateOfBirth' in object && 'ssn' in object && 'gender' in object && 'occupation' in object) {
-        const newEntry: NewPatientEntry = {
-            name: parseValue(object.name, "name"),
-            dateOfBirth: parseDate(object.dateOfBirth),
-            ssn: parseValue(object.ssn, "ssn"),
-            gender: parseGender(object.gender),
-            occupation: parseValue(object.occupation, "occupation"),
-            entries: []
-        };
-        return newEntry;
-    }    
-    
+const toNewPatientEntry = (object: unknown): NewPatient => {
+  if ( !object || typeof object !== 'object' ) {
     throw new Error('Incorrect or missing data');
+  }
+
+  if ( !('name' in object)) throw new Error('name missing');
+  if ( !('occupation' in object)) throw new Error('occupation missing');
+  if ( !('ssn' in object)) throw new Error('ssn missing');
+  if ( !('gender' in object)) throw new Error('gender missing');
+  if ( !('dateOfBirth' in object)) throw new Error('dateOfBirth missing');
+
+  return {
+    name: parseString(object.name, 'name'),
+    dateOfBirth: parseDate(object.dateOfBirth),
+    gender: parseGender(object.gender),
+    occupation: parseString(object.occupation, 'occupation'),
+    ssn: parseString(object.ssn, 'occupation'),
+    entries: []
+  };
 };
 
 const isString = (text: unknown): text is string => {
   return typeof text === "string" || text instanceof String;
 };
 
-const parseValue = (value: unknown, field: string): string => {
+const parseString = (value: unknown, field: string): string => {
   if (!value || !isString(value)) {
     throw new Error(`Incorrect or missing ${field}: ${value}`);
   }
@@ -42,17 +43,15 @@ const parseDate = (date: unknown): string => {
   return date;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const isGender = (param: any): param is Gender => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  return Object.values(Gender).includes(param);
+const isGender = (value: string): value is Gender => {
+  return Object.values(Gender).map(v => v.toString()).includes(value);
 };
 
-const parseGender = (gender: unknown): Gender => {
-  if (!gender || !isGender(gender)) {
-    throw new Error(`Incorrect or missing gender: ${gender}`);
+const parseGender = (value: unknown): Gender => {
+  if (!isString(value) || !isGender(value)) {
+      throw new Error(`Value of gender incorrect: ${value}`);
   }
-  return gender;
+  return value;
 };
 
 export default toNewPatientEntry;
