@@ -1,7 +1,7 @@
 export interface Diagnosis {
-  code: string;
-  name: string;
-  latin?: string;
+    code: string;
+    name: string;
+    latin?: string;
 }
 
 export interface BaseEntry {
@@ -51,20 +51,23 @@ export type Entry =
     | OccupationalHealthcareEntry
     | HealthCheckEntry;
 
-export enum Gender {
-  Male = "male",
-  Female = "female",
-  Other = "other"
-}
 
 export interface Patient {
-  id: string;
-  name: string;
-  occupation: string;
-  gender: Gender;
-  ssn?: string;
-  dateOfBirth?: string;
-  entries?: Entry[];
+    id: string;
+    name: string;
+    dateOfBirth: string;
+    ssn: string;
+    gender: Gender;
+    occupation: string;
+    entries?: Entry[];
 }
 
-export type PatientFormValues = Omit<Patient, "id" | "entries">;
+export enum Gender {
+    Male = 'male',
+    Female = 'female',
+    Other = 'other'
+}
+
+export type NewPatient = Omit<Patient, 'id'>;
+
+export type NonSensitivePatient = Omit<Patient, 'ssn' >;
