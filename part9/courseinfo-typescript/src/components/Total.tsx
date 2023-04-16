@@ -1,18 +1,15 @@
-interface Part {
-  name: string
-  exerciseCount: number
-}
+import { type CoursePart } from '../types'
 
 interface TotalProps {
-  parts: Part[]
+  parts: CoursePart[]
 }
 
 const Total = ({ parts }: TotalProps) => {
   return (
-        <p>
-            Number of exercises{' '}
-            {parts.reduce((carry, part) => carry + part.exerciseCount, 0)}
-        </p>
+    <p>
+      Number of exercises{' '}
+      {parts.reduce((carry, part) => carry + part.exerciseCount, 0)}
+    </p>
   )
 }
 
