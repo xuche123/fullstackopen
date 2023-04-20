@@ -40,7 +40,7 @@ const EntryPage = ({ entry, diagnosis }: EntryProps) => {
                             <li key={code}>{code} {getDiagnosisName(code)}</li>
                         ))}
                     </ul>
-                    <p>Discharge: {entry.discharge.date} {entry.discharge.criteria}</p>
+                    {entry.discharge && <p>Discharge: {entry.discharge.date} {entry.discharge.criteria}</p>}
                     <p><b>Diagnose by: </b>{entry.specialist}</p>
                 </div>
             )

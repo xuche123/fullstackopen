@@ -32,7 +32,7 @@ export interface Discharge {
 
 export interface HospitalEntry extends BaseEntry {
     type: "Hospital";
-    discharge: Discharge;
+    discharge?: Discharge;
 }
 
 export interface SickLeave {
@@ -59,8 +59,12 @@ export interface Patient {
     ssn: string;
     gender: Gender;
     occupation: string;
-    entries?: Entry[];
+    entries: Entry[];
 }
+
+type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
+
+export type EntryWithoutId = UnionOmit<Entry, 'id'>;
 
 export enum Gender {
     Male = 'male',

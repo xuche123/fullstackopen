@@ -1,32 +1,45 @@
 import express from 'express';
-import patientService from '../services/patientService';
-import toNewPatientEntry from '../utils';
+import patientsService from '../services/patientService';
+import { parsePatient, parseEntry } from '../utils';
 
 const router = express.Router();
 
 router.get('/', (_req, res) => {
-    res.send(patientService.getNonSensitiveEntries());
+  res.send(patientsService.getAllWithoutSsn());
 });
 
 router.get('/:id', (req, res) => {
-    const id = req.params.id;
-    const patient = patientService.getPatient(id);
-    if (patient) {
-        res.send(patient);
-    } else {
-        res.status(404).send("Patient not found");
-    }
+  const id = req.params.id ;
+  res.send(patientsService.getOne(id));
 });
 
 router.post('/', (req, res) => {
-    try {
-        const newPatientEntry = toNewPatientEntry(req.body);
-        const addedEntry = patientService.addEntry(newPatientEntry);
-        res.json(addedEntry);
-    } catch (e: unknown) {
-        const error = e as Error;
-        res.status(400).send(error.message);
+  try {
+    const newPatient = parsePatient(req.body);
+    const addedPatient = patientsService.create(newPatient);
+    res.send(addedPatient);
+  } catch (error: unknown) {
+    let errorMessage = 'Something went wrong.';
+    if (error instanceof Error) {
+      errorMessage += ' Error: ' + error.message;
     }
+    res.status(400).send(errorMessage);
+  }
+
 });
-    
+
+router.post('/:id/entries', (req, res) => {
+  try {
+    const newEntry = parseEntry(req.body);
+    const patient = patientsService.addEntry(req.params.id, newEntry);
+    res.send(patient);
+  } catch (error: unknown) {
+    let errorMessage = 'Something went wrong.';
+    if (error instanceof Error) {
+      errorMessage += ' Error: ' + error.message;
+    }
+    res.status(400).send(errorMessage);
+  }
+});
+
 export default router;
