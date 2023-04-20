@@ -1,6 +1,7 @@
 const { ApolloServer } = require('@apollo/server')
 const { startStandaloneServer } = require('@apollo/server/standalone')
-const { v1 : uuid } = require('uuid')
+const { v1: uuid } = require('uuid')
+const { GraphQLError } = require('graphql')
 
 let authors = [
   {
@@ -162,6 +163,15 @@ const resolvers = {
 
   Mutation: {
     addBook: (root, args) => {
+      if (!args.title || !args.published || !args.author || !args.genres) {
+        throw new GraphQLError('All fields must be filled', {
+          extensions: {
+            code: 'BAD_USER_INPUT',
+            invalidArgs: args,
+          }
+        })
+      }
+
       if (books.find(b => b.title === args.title)) {
         return null
       }
