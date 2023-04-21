@@ -2,7 +2,7 @@ import { useQuery, useMutation } from '@apollo/client'
 import { GET_AUTHORS, EDIT_AUTHOR } from '../queries'
 import { useState } from 'react'
 
-const Authors = ({ show }) => {
+const Authors = ({ show, token }) => {
   const result = useQuery(GET_AUTHORS)
   const [editAuthor] = useMutation(EDIT_AUTHOR, {
     refetchQueries: [{ query: GET_AUTHORS }]
@@ -47,7 +47,7 @@ const Authors = ({ show }) => {
         </tbody>
       </table>
       <h2>Set birthyear</h2>
-      <form onSubmit={onSubmit}>
+      {token && <form onSubmit={onSubmit}>
         name
         {<select value={name} onChange={({ target }) => setName(target.value)}>
           {authors.map((a) => (
@@ -59,10 +59,11 @@ const Authors = ({ show }) => {
 
         <div>
           born
-          <input value={born} onChange={({target}) => setBorn(target.value)} />
+          <input value={born} onChange={({ target }) => setBorn(target.value)} />
         </div>
         <button type="submit">update author</button>
-      </form>
+      </form>}
+      
     </div>
   )
 }
