@@ -117,9 +117,8 @@ const resolvers = {
       }
 
     },
-    allAuthors: async () => {
-      await Author.find({})
-    },
+    allAuthors: async () => 
+      await Author.find({}),
   },
 
   Mutation: {
