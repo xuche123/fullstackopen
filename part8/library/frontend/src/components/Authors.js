@@ -50,6 +50,7 @@ const Authors = ({ show, token }) => {
       {token && <form onSubmit={onSubmit}>
         name
         {<select value={name} onChange={({ target }) => setName(target.value)}>
+          <option>select an author..</option>
           {authors.map((a) => (
             <option key={a.name} value={a.name}>
               {a.name}

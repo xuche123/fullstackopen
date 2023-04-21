@@ -172,16 +172,19 @@ const resolvers = {
     },
 
     editAuthor: async (root, args, context) => {
+      
       const currentUser = context.currentUser
       if (!currentUser) {
         throw new AuthenticationError("not authenticated")
       }
-
+      
       const author = await Author.findOne({ name: args.name })
       if (!author) {
+        console.log('Author not found')
         return null
       }
-      author = { ...author, born: args.setBornTo }
+      author.born = args.setBornTo
+      console.log(author)
       try {
         await author.save()
       } catch (error) {
@@ -198,7 +201,7 @@ const resolvers = {
     },
 
     createUser: async (root, args) => {
-      const user = new User({ username: args.username })
+      const user = new User({ username: args.username, favoriteGenre: args.favoriteGenre })
 
       return user.save()
         .catch(error => {
