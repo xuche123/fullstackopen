@@ -1,0 +1,15 @@
+Script started on 2023-05-15 14:08:27+08:00 [TERM="xterm-256color" TTY="/dev/pts/2" COLUMNS="188" LINES="49"]
+root@XUCHE:~# docker exec -it todo-backend-redis-1 redis-cli
+127.0.0.1:6379> KEYS count
+(empty array)
+127.0.0.1:6379> SET count 9001
+OK
+127.0.0.1:6379> GET count
+"9001"
+127.0.0.1:6379> DEL count
+(integer) 1
+127.0.0.1:6379> exit
+root@XUCHE:~# exit
+exit
+
+Script done on 2023-05-15 14:09:43+08:00 [COMMAND_EXIT_CODE="0"]

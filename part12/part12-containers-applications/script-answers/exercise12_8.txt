@@ -1,0 +1,77 @@
+Script started on 2023-05-15 13:30:33+08:00 [TERM="xterm-256color" TTY="/dev/pts/2" COLUMNS="188" LINES="49"]
+root@XUCHE:~# docker exec -it todo-backend-mongo-1 mongosh -u root -p example
+Current Mongosh Log ID: 6461c37b5fca0350b44370d6
+Connecting to:          mongodb://<credentials>@127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.8.2
+Using MongoDB:          6.0.5
+Using Mongosh:          1.8.2
+
+For mongosh info see: https://docs.mongodb.com/mongodb-shell/
+
+------
+   The server generated these startup warnings when booting
+   2023-05-15T05:26:43.247+00:00: /sys/kernel/mm/transparent_hugepage/enabled is 'always'. We suggest setting it to 'never'
+   2023-05-15T05:26:43.247+00:00: vm.max_map_count is too low
+------
+
+------
+   Enable MongoDB's free cloud-based monitoring service, which will then receive and display
+   metrics about your deployment (disk utilization, CPU, operation statistics, etc).
+
+   The monitoring data will be available on a MongoDB website with a unique URL accessible to you
+   and anyone you share the URL with. MongoDB may use this information to make product
+   improvements and to suggest MongoDB products and deployment options to you.
+
+   To enable free monitoring, run the following command: db.enableFreeMonitoring()
+   To permanently disable this reminder, run the following command: db.disableFreeMonitoring()
+------
+
+test> show dbs
+admin         100.00 KiB
+config         12.00 KiB
+local          72.00 KiB
+the_database   40.00 KiB
+test> use the_database
+switched to db the_database
+the_database> show collections
+todos
+the_database> db.todos.find({})
+[
+  {
+    _id: ObjectId("6461bc4152d985eae9ee5661"),
+    text: 'Write code',
+    done: true
+  },
+  {
+    _id: ObjectId("6461bc4152d985eae9ee5662"),
+    text: 'Learn about containers',
+    done: false
+  }
+]
+the_database> db.todos.insertOne({text: "Increase the number of tools in my toolbelt",done: false})
+{
+  acknowledged: true,
+  insertedId: ObjectId("6461c3df5fca0350b44370d7")
+}
+the_database> db.todos.find({})
+[
+  {
+    _id: ObjectId("6461bc4152d985eae9ee5661"),
+    text: 'Write code',
+    done: true
+  },
+  {
+    _id: ObjectId("6461bc4152d985eae9ee5662"),
+    text: 'Learn about containers',
+    done: false
+  },
+  {
+    _id: ObjectId("6461c3df5fca0350b44370d7"),
+    text: 'Increase the number of tools in my toolbelt',
+    done: false
+  }
+]
+the_database> exit
+root@XUCHE:~# exit
+exit
+
+Script done on 2023-05-15 13:32:39+08:00 [COMMAND_EXIT_CODE="0"]

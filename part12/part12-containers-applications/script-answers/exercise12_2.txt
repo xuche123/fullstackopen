@@ -1,0 +1,24 @@
+Script started on 2023-05-14 22:22:05+08:00 [TERM="xterm-256color" TTY="/dev/pts/3" COLUMNS="108" LINES="28"]
+root@XUCHE:~# docker run -it ubuntu bash
+Unable to find image 'ubuntu:latest' locally
+latest: Pulling from library/ubuntu
+dbf6a9befcde: Pull complete
+Digest: sha256:dfd64a3b4296d8c9b62aa3309984f8620b98d87e47492599ee20739e8eb54fbf
+Status: Downloaded newer image for ubuntu:latest
+root@e87bc319b149:/# ls
+bin   dev  home  lib32  libx32  mnt  proc  run   srv  tmp  var
+boot  etc  lib   lib64  media   opt  root  sbin  sys  usr
+root@e87bc319b149:/# cd usr
+root@e87bc319b149:/usr# cd src
+root@e87bc319b149:/usr/src# ls
+root@e87bc319b149:/usr/src# mkdir app
+root@e87bc319b149:/usr/src# ls
+app
+root@e87bc319b149:/usr/src# cd app
+root@e87bc319b149:/usr/src/app# touch index.js
+root@e87bc319b149:/usr/src/app# exit
+exit
+root@XUCHE:~# exit
+exit
+
+Script done on 2023-05-14 22:24:23+08:00 [COMMAND_EXIT_CODE="0"]

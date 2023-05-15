@@ -1,0 +1,13 @@
+GET http://localhost:3000/todos
+
+###
+DELETE http://localhost:3000/todos/6461bb755f991a45e0ea4e4f
+
+###
+POST http://localhost:3000/todos
+Content-Type: application/json
+
+{
+  "title": "New Todo",
+  "completed": false
+}

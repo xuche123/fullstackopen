@@ -1,0 +1,9 @@
+Script started on 2023-05-15 06:06:33+00:00 [TERM="xterm" TTY="/dev/pts/1" COLUMNS="188" LINES="49"]
+# doc   ^[[A^[[A^[[A            docker exec -t it todo-backend-redois    dis-1 redis-cli
+sh: 1: docker: not found
+# ^[[A^[[A        docker exi ex -it todo-backend-e redis-1 bash
+sh: 2: docker: not found
+# d docker nop          ^C
+# exit
+
+Script done on 2023-05-15 06:07:48+00:00 [COMMAND_EXIT_CODE="130"]
